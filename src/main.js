@@ -14,20 +14,33 @@ const router = createRouter({
     routes: [
         { path: '/', redirect: '/teams' },
         {
-         name: 'teams',    
-         path: '/teams',
-         components: { default: TeamsList, footer: TeamsFooter },
-         children: [
-            { name: 'team-members', path: ':teamId', component: TeamMembers, props: true },
+          name: 'teams',    
+          path: '/teams',
+          components: { default: TeamsList, footer: TeamsFooter },
+          children: [
+            { 
+              name: 'team-members',
+              path: ':teamId',
+              component: TeamMembers, props: true
+            },
         ]},
-        { path: '/users', components: { 
-            default: UsersList,
-            footer: UsersFooter
+        { 
+          path: '/users',
+          components: { 
+          default: UsersList,
+          footer: UsersFooter
          }},
         
         { path: '/:notFound(.*)', component: NotFound },
     ],
     linkActiveClass: 'active',
+    scrollBehavior(to, from, savedPosition) {
+        console.log(to, from, savedPosition);
+        if (savedPosition) {
+            return savedPosition;
+        }
+        return { left: 0, top: 0 }
+    }
 });
 
 const app = createApp(App)
